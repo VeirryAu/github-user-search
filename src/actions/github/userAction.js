@@ -48,14 +48,23 @@ const get = params => async (dispatch, getState) => {
   }))
 
   try {
-    const response = await queryUser({
+    const mergedFilter = {
       ...filter,
       ...params
-    })
-    dispatch(receive(response.items, {
-      ...filter,
-      ...params
-    }))
+    }
+    const response = await queryUser(mergedFilter)
+    if (response && response.items && response.items.length > 0) {
+      dispatch(receive(response.items, {
+        ...filter,
+        ...params
+      }))
+    } else {
+      console.log('mergedFilter', response.items.length, mergedFilter)
+      dispatch(updateState({
+        loading: false,
+        reachMax: true
+      }))
+    }
   } catch (error) {
     failed(error)
   }

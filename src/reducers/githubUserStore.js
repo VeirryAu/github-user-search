@@ -9,8 +9,9 @@ const initialState = {
   loading: false,
   filter: {
     page: 1,
-    per_page: 10
+    per_page: 20
   },
+  reachMax: false,
   list: [],
   errorMessage: null
 }
@@ -27,6 +28,7 @@ export default (state = initialState, action = {}) => {
     case RESET_LIST_GITHUB_USER:
       return {
         ...state,
+        reachMax: false,
         filter: {
           ...state.filter,
           page: 1

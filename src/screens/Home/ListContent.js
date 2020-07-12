@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { FlatList } from 'react-native'
 import EmptyState from 'components/EmptyState'
@@ -9,7 +9,7 @@ import {
 import { View } from 'native-base'
 import SearchItem from './SearchItem'
 
-class ListContent extends Component {
+class ListContent extends PureComponent {
   _refresh = async () => {
     const { dispatch } = this.props
     await dispatch(resetList())
@@ -19,10 +19,12 @@ class ListContent extends Component {
   }
 
   _handleLoadMore = () => {
-    const { filter, dispatch } = this.props
-    dispatch(changeFilter({
-      page: filter.page + 1
-    }))
+    const { filter, reachMax, dispatch } = this.props
+    if (!reachMax) {
+      dispatch(changeFilter({
+        page: filter.page + 1
+      }))
+    }
   }
 
   render () {
@@ -45,13 +47,15 @@ class ListContent extends Component {
                 item={item}
               />
             )}
+            removeClippedSubviews
             keyExtractor={item => `${item.id}`}
             // ListHeaderComponent={this._renderHeader}
             onRefresh={this._refresh}
             refreshing={loading}
             onEndReached={this._handleLoadMore}
-            onEndReachedThreshold={0.5}
+            onEndReachedThreshold={3}
             initialNumToRender={filter.per_page}
+            maxToRenderPerBatch={filter.per_page}
           />
         )}
       </View>
@@ -60,6 +64,7 @@ class ListContent extends Component {
 }
 
 const mapStateToProps = state => ({
+  reachMax: state.githubUserStore.reachMax,
   loading: state.githubUserStore.loading,
   filter: state.githubUserStore.filter,
   list: state.githubUserStore.list,
