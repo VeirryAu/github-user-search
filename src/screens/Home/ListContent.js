@@ -19,8 +19,10 @@ class ListContent extends PureComponent {
   }
 
   _handleLoadMore = () => {
-    const { filter, reachMax, dispatch } = this.props
-    if (!reachMax) {
+    const {
+      filter, loading, reachMax, dispatch
+    } = this.props
+    if (!reachMax && !loading) {
       dispatch(changeFilter({
         page: filter.page + 1
       }))
