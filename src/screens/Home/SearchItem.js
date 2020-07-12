@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 
 const styles = StyleSheet.create({
-  listItem: {
+  body: {
     borderBottomWidth: 0
   }
 })
@@ -16,11 +16,11 @@ const SearchItem = ({
   item
 }) => {
   return (
-    <ListItem avatar style={styles.listItem}>
+    <ListItem avatar>
       <Left>
         <Thumbnail source={{ uri: item.avatar_url }} />
       </Left>
-      <Body>
+      <Body style={styles.body}>
         <Text>{item.login}</Text>
       </Body>
     </ListItem>
