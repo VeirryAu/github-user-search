@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import color from 'theme/color'
+import { NativeModules, processColor } from 'react-native'
 import Container from './Container'
+
+const { StatusBarManager } = NativeModules
 
 class HomeScreen extends Component {
   static navigationOptions = () => {
@@ -34,6 +37,10 @@ class HomeScreen extends Component {
       headerBackTitle,
       headerLayoutPreset: 'center'
     })
+  }
+
+  componentDidMount () {
+    StatusBarManager.setColor(processColor(color.darkPrimaryColor), false)
   }
 
   render () {

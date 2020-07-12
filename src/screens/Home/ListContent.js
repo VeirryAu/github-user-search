@@ -34,7 +34,7 @@ class ListContent extends Component {
 
     return (
       <View>
-        {list && list.loading && list.length === 0 ? (
+        {list && !list.loading && list.length === 0 ? (
           <EmptyState title="Search User" />
         ) : null}
         {list && list.length > 0 && (
