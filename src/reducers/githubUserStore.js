@@ -12,26 +12,26 @@ const initialState = {
     per_page: 10
   },
   list: [],
-  currentItem: [],
-  meta: {},
-  dataSet: [],
   errorMessage: null
 }
 
 export default (state = initialState, action = {}) => {
   switch (action.type) {
-    case RECEIVE_GITHUB_USER:
+    case RECEIVE_GITHUB_USER: {
       return {
         ...state,
-        list: action.payload.list,
-        meta: action.payload.meta
+        loading: false,
+        list: action.payload.filter.page === 1 ? Array.from(action.payload.list) : [...state.list, ...action.payload.list]
       }
+    }
     case RESET_LIST_GITHUB_USER:
       return {
         ...state,
-        list: [],
-        meta: {},
-        dataSet: []
+        filter: {
+          ...state.filter,
+          page: 1
+        },
+        list: []
       }
     case UPDATE_STATE_GITHUB_USER:
       return { ...state, ...action.payload }
