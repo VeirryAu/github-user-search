@@ -1,4 +1,5 @@
 {
   "name": "GithubUserSearch",
-  "displayName": "Github User Search"
+  "displayName": "Github User Search",
+  "androidStatusBarColor": "#0097A7"
 }

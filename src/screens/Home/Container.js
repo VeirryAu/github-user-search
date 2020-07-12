@@ -21,7 +21,10 @@ const styles = StyleSheet.create({
 const Container = () => {
   return (
     <View style={styles.container}>
-      <Header style={styles.header}>
+      <Header
+        androidStatusBarColor={color.darkPrimaryColor}
+        style={styles.header}
+      >
         <Search />
       </Header>
       <ListContent />
