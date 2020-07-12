@@ -59,7 +59,6 @@ const get = params => async (dispatch, getState) => {
         ...params
       }))
     } else {
-      console.log('mergedFilter', response.items.length, mergedFilter)
       dispatch(updateState({
         loading: false,
         reachMax: true
