@@ -1,4 +1,3 @@
-import pagination from 'utils/pagination'
 import {
   queryUser
 } from 'services/github/userService'
@@ -9,12 +8,12 @@ import {
   FAILED_GITHUB_USER
 } from '../types'
 
-const receive = (list, meta = {}) => {
+const receive = (list, filter) => {
   return {
     type: RECEIVE_GITHUB_USER,
     payload: {
       list,
-      meta
+      filter
     }
   }
 }
@@ -43,33 +42,23 @@ const clearList = () => {
 
 const get = params => async (dispatch, getState) => {
   const { filter } = getState().githubUserStore
-  const { ...other } = params
-  const dataset = await pagination({
-    pageSize: filter.page,
-    fetch: () => dispatch(updateState({
-      loading: true
-    })),
-    receive: (data) => {
-      dispatch(receive(data))
-    },
-    success: () => {
-      dispatch(updateState({
-        loading: false
-      }))
-    },
-    failed: ({ message }) => dispatch(failed(message)),
-    api: pageOffset => queryUser({
-      ...filter,
-      ...other,
-      page: pageOffset + 1
-    })
-  })
-
-  dataset.setReadOffset(0)
 
   dispatch(updateState({
-    dataSet: dataset
+    loading: true
   }))
+
+  try {
+    const response = await queryUser({
+      ...filter,
+      ...params
+    })
+    dispatch(receive(response.items, {
+      ...filter,
+      ...params
+    }))
+  } catch (error) {
+    failed(error)
+  }
 }
 
 const resetList = () => async (dispatch) => {

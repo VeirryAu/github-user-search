@@ -22,13 +22,14 @@ const styles = StyleSheet.create({
 })
 
 class Form extends Component {
-  searchSubmit = (search) => {
+  searchSubmit = async (search) => {
     const { dispatch } = this.props
     if (search) {
-      dispatch(changeFilter(search))
+      await dispatch(resetList())
+      await dispatch(changeFilter({ ...search, page: 1 }))
     } else {
-      dispatch(resetList())
-      dispatch(changeFilter({ q: '' }))
+      await dispatch(resetList())
+      await dispatch(changeFilter({ q: '', page: 1 }))
     }
   }
 
