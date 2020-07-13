@@ -39,7 +39,7 @@ class ListContent extends PureComponent {
     return (
       <View>
         {list && !list.loading && list.length === 0 ? (
-          <EmptyState title="Search User" />
+          <EmptyState title="" />
         ) : null}
         {list && list.length > 0 && (
           <FlatList
